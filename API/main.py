@@ -1,3 +1,4 @@
+from logging import DEBUG
 import os
 import requests 
 from flask import Flask, request
@@ -6,14 +7,15 @@ from dotenv import load_dotenv
 load_dotenv(dotenv_path="./.env.local")
 
 UNSPLASH_URL="https://api.unsplash.com/photos/random"
-UNSPLASH_KEY= os.environ.get("UNSPLASH_KEY", "");
+UNSPLASH_KEY= os.environ.get("UNSPLASH_KEY", "")
+DEBUG= bool(os.environ.get("DEBUG", True))
 # when we write  variable in capital letter it becomes constant and it value does not change the life cycle inside the application
 
 if not UNSPLASH_KEY:
     raise EnvironmentError("Please create .env.local file and insert there UNSPLASH_KEY")
 
 app = Flask(__name__)
-
+app.config["DEBUG"]= DEBUG
 @app.route("/new-image")
 def new_image():
     word = request.args.get("query")
